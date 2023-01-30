@@ -7,9 +7,11 @@ import unittest
 import aiofiles
 import aiohttp
 import openai
+
 from file_handler import FileHandler
 from file_type_handler import FileTypeHandler
 from suggestion_handler import SuggestionHandler
+
 
 class CodeImprover:
     """Class for improving code"""
