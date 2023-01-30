@@ -11,7 +11,6 @@ from file_handler import FileHandler
 from file_type_handler import FileTypeHandler
 from suggestion_handler import SuggestionHandler
 
-
 class CodeImprover:
     """Class for improving code"""
     def __init__(self, *, file_path: str):
@@ -50,8 +49,7 @@ class CodeImprover:
     
     async def get_suggestions(self) -> str:
         """Get the suggestions to improve the code from the suggestion handler"""
-        improvement_factor = "the readability of"
-        return await self.suggestion_handler.get_suggestions(f"#### List how to improve {improvement_factor} this {self.file_type}\n\n### Old {self.file_type}\n{self.file_contents}\n\n\nHow could I improve this {self.file_type}?\n")
+        return await self.suggestion_handler.get_suggestions(f"#### List how to improve this {self.file_type}\n\n### Old {self.file_type}\n{self.file_contents}\n\n\nHow could I improve this {self.file_type}?\n")
 
 async def run_code_improver(file_path: str, logging_level: int) -> None:
     """Run the code improver with the given file path and logging level"""

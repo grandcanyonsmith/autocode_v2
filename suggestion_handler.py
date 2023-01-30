@@ -15,7 +15,7 @@ class SuggestionHandler:
         self.engine = engine
         self.logger = logging.getLogger(__name__)
 
-    async def get_suggestions(self, prompt: str, temperature: float = 0.3, max_tokens: int = 2000, top_p: float = 1, frequency_penalty: float = 0, presence_penalty: float = 0) -> str:
+    async def get_suggestions(self, prompt: str, temperature: float = 0.7, max_tokens: int = 2000, top_p: float = 1, frequency_penalty: float = 0, presence_penalty: float = 0) -> str:
         """Makes an API call to the OpenAI API and returns the suggestions for improvement"""
         try:
             openai.api_key = await get_openai_api_key()
@@ -29,6 +29,7 @@ class SuggestionHandler:
                                               'presence_penalty': presence_penalty,
                                               'stop': ['\n\n### Suggestions', '\n\n### New']}) as resp:
                     response = await resp.json()
+                    print(response)
                     return response['choices'][0]['text']
         except Exception as e:
             self.logger.error(f"Error getting suggestions: {e}")
