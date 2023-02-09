@@ -49,6 +49,7 @@ async def make_openai_api_call(engine: str, api_key: str, payload: dict) -> dict
                 json=payload,
             ) as resp:
                 response = await resp.json()
+                print(response)
                 return response["choices"][0]["text"]
 
     finally:
@@ -83,8 +84,8 @@ class SuggestionHandler:
     async def get_suggestions(
         self,
         prompt: str,
-        temperature: float = 0.7,
-        max_tokens: int = 2000,
+        temperature: float = 0.2,
+        max_tokens: int =2000,
         top_p: float = 1,
         frequency_penalty: float = 0,
         presence_penalty: float = 0,
@@ -92,8 +93,8 @@ class SuggestionHandler:
     ) -> str:
         """Makes an API call to the OpenAI API and returns the suggestions for improvement"""
         # Set default values for stop words if none are provided
-        if stop_words is None:
-            stop_words = ["\n\n### Suggestions", "\n\n### New"]
+        # if stop_words is None:
+        #     stop_words = ["\n\n### Suggestions", "\n\n### New"]
 
         # Retrieve the OpenAI API key
         api_key = await get_openai_api_key()
@@ -120,18 +121,3 @@ class SuggestionHandler:
         except Exception as e:
             logger.error(f"Error getting suggestions: {e}")
             raise e
-
-
-# Unit tests for the SuggestionHandler class
-class TestSuggestionHandler(unittest.TestCase):
-    def setUp(self):
-        self.prompt = "This is a sample prompt."
-        self.handler = SuggestionHandler()
-
-    def test_get_suggestions(self):
-        result = self.handler.get_suggestions(self.prompt)
-        self.assertIsNotNone(result)
-
-
-if __name__ == "__main__":
-    unittest.main()

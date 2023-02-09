@@ -2,12 +2,13 @@ import logging
 
 # Dictionary of file types
 FILE_TYPES = {
-    "py": "python script with 3 line functions",
+    "py": "Python Code",
     "js": "React component binary search tree",
     "rb": "ruby script",
     "php": "php script",
     "feature": "Gherkins feature",
     "txt": "Poem about Max trading stocks after he got fired from his job as a software engineer",
+    "md": "Markdown file",
 }
 
 class FileTypeHandler:
