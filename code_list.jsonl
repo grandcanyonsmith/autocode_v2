@@ -10,4 +10,8 @@
 {"id": 6, "text": "Format the code: Format the code to make it easier to read. This includes adding whitespace, indenting code blocks, and using consistent naming conventions."}
 {"id": 7, "text": "Organize the code: Organize the code into logical sections and group related functions together. This will make it easier to find and understand the code."}
 {"id": 6, "text": "Add a docstring: Add a docstring to each function that is placed below the function name and arguments, but above the body of the function. Include a brief description of what the function is used for and any parameters that should be passed in."}
-{"id": 6, "text": "Add a docstring: Add a docstring to the top of each function to explain what the function does and how it should be used. This will make it easier for other developers to use the code."}
+{"id": 6, "text": "Add a docstring: Add a docstring to the top of each function to explain what the function does and how it sehould be used. This will make it easier for other developers to use the code."}
+
+cwd = /Users/bottega/Documents/GitHub/enium-feb/enium/stipulations/_id/analyze_id.py
+
+Create a line of code to import utils directory from /Users/bottega/Documents/GitHub/enium-feb/enium/

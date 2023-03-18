@@ -45,6 +45,7 @@ async def make_openai_api_call(engine: str, api_key: str, payload: dict) -> dict
         async with aiohttp.ClientSession() as session:
             async with session.post(
                 f"https://api.openai.com/v1/engines/{engine}/completions",
+                # f"https://api.openai.com/v1/engines/{engine}/completions",
                 headers={"Authorization": f"Bearer {openai.api_key}"},
                 json=payload,
             ) as resp:
