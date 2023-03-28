@@ -1,1 +1,0 @@
-Background information:\n"""\n{' '.join(self.background_information)}\n"""\n\nDesired Outcome:\n"""\n{' '.join(self.desired_outcome)}\n"""\n\nNumber of emails in the email sequence:\n"""\n{self.number_of_emails}\n"""\n\nValue propositions for email sequence:\n"""

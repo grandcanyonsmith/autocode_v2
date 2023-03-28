@@ -1,6 +1,8 @@
+
 import asyncio
 import logging
 import os
+from typing import Dict, Optional, Any
 
 import aiofiles
 import aiohttp
@@ -26,20 +28,41 @@ class FileHandler:
     async def make_http_request(
         self,
         url: str,
-        headers: dict = None,
+        headers: Optional[Dict[str, str]] = None,
         timeout: int = 60,
         encoding: str = "utf-8",
-        **kwargs,
+        **kwargs: Any,
     ) -> str:
+        """
+        Make an HTTP request and return the response text.
+
+        :param url: The URL to make the request to.
+        :param headers: A dictionary of headers to include in the request.
+        :param timeout: The timeout for the request in seconds.
+        :param encoding: The encoding to use for the response text.
+        :param kwargs: Additional keyword arguments to pass to the helper function.
+        :return: The response text.
+        :raises: RequestError if there is an error making the HTTP request.
+        """
         if headers is None:
             headers = {}
+
         try:
             return await self.__make_http_request_helper(
                 url=url, headers=headers, timeout=timeout, encoding=encoding, **kwargs
             )
         except Exception as err:
             self.logger.error(f"Error making HTTP request: {err}")
-            raise err
+            raise RequestError(f"Error making HTTP request: {err}") from err
+
+    async def __make_http_request_helper(
+        self, url: str, headers: Dict[str, str], timeout: int, encoding: str, **kwargs: Any
+    ) -> str:
+        # Implementation of the helper function
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, headers=headers, timeout=timeout, **kwargs) as response:
+                response.raise_for_status()
+                return await response.text(encoding=encoding)
 
 
     async def __read_write_file_helper_read_file(self, encoding: str) -> bytes:

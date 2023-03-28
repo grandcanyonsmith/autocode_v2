@@ -85,7 +85,7 @@ class SuggestionHandler:
         self,
         prompt: str,
         temperature: float = 0.2,
-        max_tokens: int =2000,
+        max_tokens: int =1000,
         top_p: float = 1,
         frequency_penalty: float = 0,
         presence_penalty: float = 0,
