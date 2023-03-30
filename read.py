@@ -94,6 +94,10 @@ def calculate_total_cost(item_cost, quantity, tax_rate):
     """
 
     try:
+        # Validate inputs
+        if item_cost <= 0 or quantity <= 0 or tax_rate < 0:
+            raise ValueError("Invalid input. item_cost, quantity, and tax_rate must be greater than 0.")
+
         # Calculate the subtotal
         subtotal = item_cost * quantity
         logging.info("Calculated subtotal: %s", subtotal)

@@ -28,7 +28,7 @@ class FileHandler:
         self.file_path = file_path
         self.file_size = 0
 
-    async def read_file(self, num_bytes_to_read: int = 0, encoding: str = "utf-8") -> str:
+    async def read_file(self,num_bytes_to_read: int = 0, encoding: str = "utf-8") -> str:
         """Read the contents of a file asynchronously.
 
         Args:
@@ -38,6 +38,9 @@ class FileHandler:
         Returns:
             str: The contents of the file.
         """
+        if num_bytes_to_read < 0:
+           raise ValueError("num_bytes_to_read must be non-negative")
+
         async with aiofiles.open(self.file_path, "r", encoding=encoding) as file:
             return await (file.read(num_bytes_to_read) if num_bytes_to_read > 0 else file.read())
 
@@ -49,9 +52,12 @@ class FileHandler:
             append (bool): Whether to append the content to the existing file or overwrite it.
             encoding (str): The encoding to use when writing the file.
         """
+        if content is None:
+            raise ValueError("content must not be None")
+
         async with aiofiles.open(
             self.file_path, "a" if append else "w", encoding=encoding
-            ) as file:
+        ) as file:
             await file.write(content)
 
     async def read_write_file(self, content: str, encoding: str = "utf-8") -> None:
@@ -61,6 +67,9 @@ class FileHandler:
             content (str): The content to append to the file.
             encoding (str): The encoding to use when reading and writing the file.
         """
+        if content is None:
+            raise ValueError("content must not be None")
+
         content_from_file = await self.read_file(encoding=encoding)
         await self.write_file(content=content_from_file + content, append=True, encoding=encoding)
 
@@ -93,6 +102,9 @@ class HttpRequestHandler:
         Raises:
             RequestError: If there is an error making the HTTP request.
         """
+        if not url:
+            raise ValueError("url must not be empty")
+
         if headers is None:
             headers = {}
 

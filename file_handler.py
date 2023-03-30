@@ -164,6 +164,115 @@
 # 85 80 85 75 80
 
 
+# import asyncio
+# import logging
+# import os
+# from typing import Dict, Optional, Any
+
+# import aiofiles
+# import aiohttp
+
+
+# class FileHandler:
+#     """A class to handle file read and write operations asynchronously."""
+
+#     logger = logging.getLogger(__name__)
+
+#     def __init__(self, file_path: str):
+#         self.file_path = file_path
+#         self.file_size = 0
+
+#     async def read_file(self, num_bytes_to_read: int = 0, encoding: str = "utf-8") -> str:
+#         """Read the contents of a file asynchronously.
+
+#         Args:
+#             num_bytes_to_read (int): Number of bytes to read from the file. If 0, read the entire file.
+#             encoding (str): The encoding to use when reading the file.
+
+#         Returns:
+#             str: The contents of the file.
+#         """
+#         async with aiofiles.open(self.file_path, "r", encoding=encoding) as file:
+#             return await (file.read(num_bytes_to_read) if num_bytes_to_read > 0 else file.read())
+
+#     async def write_file(self, content: str, append: bool = False, encoding: str = "utf-8") -> None:
+#         """Write content to a file asynchronously.
+
+#         Args:
+#             content (str): The content to write to the file.
+#             append (bool): Whether to append the content to the existing file or overwrite it.
+#             encoding (str): The encoding to use when writing the file.
+#         """
+#         async with aiofiles.open(
+#             self.file_path, "a" if append else "w", encoding=encoding
+#             ) as file:
+#             await file.write(content)
+
+#     async def read_write_file(self, content: str, encoding: str = "utf-8") -> None:
+#         """Read the contents of a file and then append new content to it asynchronously.
+
+#         Args:
+#             content (str): The content to append to the file.
+#             encoding (str): The encoding to use when reading and writing the file.
+#         """
+#         content_from_file = await self.read_file(encoding=encoding)
+#         await self.write_file(content=content_from_file + content, append=True, encoding=encoding)
+
+
+# class HttpRequestHandler:
+#     """A class to handle HTTP requests asynchronously."""
+
+#     logger = logging.getLogger(__name__)
+
+#     async def make_http_request(
+#         self,
+#         url: str,
+#         headers: Optional[Dict[str, str]] = None,
+#         timeout: int = 60,
+#         encoding: str = "utf-8",
+#         **kwargs: Any,
+#     ) -> str:
+#         """Make an HTTP GET request asynchronously.
+
+#         Args:
+#             url (str): The URL to request.
+#             headers (Optional[Dict[str, str]]): Headers to include in the request.
+#             timeout (int): Timeout for the request in seconds.
+#             encoding (str): The encoding to use when decoding the response text.
+#             **kwargs: Additional keyword arguments for the aiohttp request.
+
+#         Returns:
+#             str: The response text.
+
+#         Raises:
+#             RequestError: If there is an error making the HTTP request.
+#         """
+#         if headers is None:
+#             headers = {}
+
+#         try:
+#             async with aiohttp.ClientSession() as session:
+#                 async with session.get(url, headers=headers, timeout=timeout, **kwargs) as response:
+#                     response.raise_for_status()
+#                     return await response.text(encoding=encoding)
+#         except Exception as err:
+#             self.logger.error(f"Error making HTTP request: {err}")
+#             raise RequestError(f"Error making HTTP request: {err}") from err
+
+
+# class RequestError(Exception):
+#     """A custom exception class for HTTP request errors."""
+#     pass
+
+
+# 1. Readability: 90
+# 2. Efficiency: 85
+# 3. Maintainability: 90
+# 4. Robustness: 80
+# 5. Reusability: 85
+# 90 85 90 80 85
+
+
 import asyncio
 import logging
 import os
@@ -182,7 +291,7 @@ class FileHandler:
         self.file_path = file_path
         self.file_size = 0
 
-    async def read_file(self, num_bytes_to_read: int = 0, encoding: str = "utf-8") -> str:
+    async def read_file(self,num_bytes_to_read: int = 0, encoding: str = "utf-8") -> str:
         """Read the contents of a file asynchronously.
 
         Args:
@@ -192,6 +301,9 @@ class FileHandler:
         Returns:
             str: The contents of the file.
         """
+        if num_bytes_to_read < 0:
+           raise ValueError("num_bytes_to_read must be non-negative")
+
         async with aiofiles.open(self.file_path, "r", encoding=encoding) as file:
             return await (file.read(num_bytes_to_read) if num_bytes_to_read > 0 else file.read())
 
@@ -203,9 +315,12 @@ class FileHandler:
             append (bool): Whether to append the content to the existing file or overwrite it.
             encoding (str): The encoding to use when writing the file.
         """
+        if content is None:
+            raise ValueError("content must not be None")
+
         async with aiofiles.open(
             self.file_path, "a" if append else "w", encoding=encoding
-            ) as file:
+        ) as file:
             await file.write(content)
 
     async def read_write_file(self, content: str, encoding: str = "utf-8") -> None:
@@ -215,6 +330,9 @@ class FileHandler:
             content (str): The content to append to the file.
             encoding (str): The encoding to use when reading and writing the file.
         """
+        if content is None:
+            raise ValueError("content must not be None")
+
         content_from_file = await self.read_file(encoding=encoding)
         await self.write_file(content=content_from_file + content, append=True, encoding=encoding)
 
@@ -247,6 +365,9 @@ class HttpRequestHandler:
         Raises:
             RequestError: If there is an error making the HTTP request.
         """
+        if not url:
+            raise ValueError("url must not be empty")
+
         if headers is None:
             headers = {}
 
@@ -263,11 +384,3 @@ class HttpRequestHandler:
 class RequestError(Exception):
     """A custom exception class for HTTP request errors."""
     pass
-
-
-1. Readability: 90
-2. Efficiency: 85
-3. Maintainability: 90
-4. Robustness: 80
-5. Reusability: 85
-90 85 90 80 85
